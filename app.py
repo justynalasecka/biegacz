@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field, ValidationError
 from langfuse import Langfuse
 from langfuse.decorators import observe
 
-env = dotenv_values(".env")
+#env = dotenv_values(".env")
 
 # Konfiguracja dostępu do DigitalOcean Spaces
 session = boto3.session.Session()
@@ -40,9 +40,9 @@ except Exception as e:
 
 # OpenAI API key protection
 if not st.session_state.get("openai_api_key"):
-    if "OPENAI_API_KEY" in env:
-        st.session_state["openai_api_key"] = env["OPENAI_API_KEY"]
-
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if openai_api_key:
+        st.session_state["openai_api_key"] = openai_api_key
     else:
         st.info("Dodaj swój klucz API OpenAI aby móc korzystać z tej aplikacji")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
@@ -57,9 +57,9 @@ instructor_openai_client = instructor.from_openai(openai_client)
 
 # Inicjalizacja Langfuse
 langfuse = Langfuse(
-    public_key=env["LANGFUSE_PUBLIC_KEY"],
-    secret_key=env["LANGFUSE_SECRET_KEY"],
-    host=env.get("LANGFUSE_HOST"),  # Opcjonalnie
+    public_key=os.getenv("LANGFUSE_PUBLIC_KEY"),
+    secret_key=os.getenv("LANGFUSE_SECRET_KEY"),
+    host=os.getenv("LANGFUSE_HOST"),  # Opcjonalnie
 )
 
 # Definiowanie modelu danych przy użyciu Pydantic z wartościami domyślnymi
