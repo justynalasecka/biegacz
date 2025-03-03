@@ -77,7 +77,7 @@ def convert_time_to_seconds(time):
         try:
             time_parts = time.split(':')  # Zmieniono nazwę zmiennej na bardziej czytelną
             seconds = int(time_parts[0]) * 3600 + int(time_parts[1]) * 60 + int(time_parts[2])
-            if seconds < 300:  # Sprawdzenie, czy czas jest >= 5 minut
+            if seconds < 600:  # Sprawdzenie, czy czas jest >= 10 minut
                 return None
             return seconds
         except ValueError:
@@ -183,7 +183,7 @@ if st.button("Sprawdź dane"):
         if dane_json["Płeć"] is None:
             brakujace_dane.append("płci")
         if dane_json["5 km Czas"] is None:
-            brakujace_dane.append("czasu na 5 km (format HH:MM:SS, minimum 5 minut)")
+            brakujace_dane.append("czasu na 5 km (format HH:MM:SS, minimum 10 minut)")
 
         if brakujace_dane:
             message_error = "Brakuje danych dla: " + ", ".join(brakujace_dane) + ". Proszę uzupełnij dane."
